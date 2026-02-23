@@ -33,3 +33,10 @@ Keyman is an open source project distributed under the [MIT license](LICENSE.md)
 * [Documentation](https://help.keyman.com/)
 * [Online Keyboard](https://keymanweb.com/)
 * [SIL Language Technology - software.sil.org](https://software.sil.org/)
+
+
+# Ideas for new app
+
+* Image of keyboard when searching
+* Better spot for add keyboard button
+* Clearly clickable instructions (Underlining?)

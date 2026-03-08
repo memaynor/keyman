@@ -195,8 +195,9 @@ public class MainActivity extends BaseActivity implements OnKeyboardEventListene
     toolbar = (Toolbar) findViewById(R.id.titlebar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setTitle(null);
-    getSupportActionBar().setDisplayUseLogoEnabled(false);
-    getSupportActionBar().setDisplayShowHomeEnabled(false);
+    getSupportActionBar().setDisplayUseLogoEnabled(true);
+    getSupportActionBar().setDisplayShowHomeEnabled(true);
+
     getSupportActionBar().setDisplayShowTitleEnabled(false);
     ImageView logo = new ImageView(this);
     logo.setImageResource(R.drawable.keyman_logo);

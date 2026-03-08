@@ -17,8 +17,8 @@
 
     <include
         layout="@layout/check_chrome_webview_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="96dp"
+        android:layout_height="104dp"
         android:layout_below="@id/titlebar"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/titlebar" />

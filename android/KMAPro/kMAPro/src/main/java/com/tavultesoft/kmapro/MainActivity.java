@@ -178,7 +178,7 @@ public class MainActivity extends BaseActivity implements OnKeyboardEventListene
     getSupportActionBar().setTitle(null);
     getSupportActionBar().setDisplayUseLogoEnabled(true);
     getSupportActionBar().setDisplayShowHomeEnabled(true);
-    getSupportActionBar().setLogo(R.drawable.keyman_logo);
+
     getSupportActionBar().setDisplayShowTitleEnabled(false);
     getSupportActionBar().setBackgroundDrawable(getActionBarDrawable(this));
 

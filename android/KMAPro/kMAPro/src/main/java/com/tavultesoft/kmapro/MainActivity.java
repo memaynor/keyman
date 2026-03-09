@@ -26,6 +26,7 @@ import com.keyman.engine.KMHelpFileActivity;
 import com.keyman.engine.KMKeyboardDownloaderActivity;
 import com.keyman.engine.KMManager;
 import com.keyman.engine.KMManager.KeyboardType;
+import com.keyman.engine.KeyboardEventHandler;
 import com.keyman.engine.KmpInstallMode;
 import com.keyman.engine.KMTextView;
 import com.keyman.engine.KeyboardEventHandler.OnKeyboardDownloadEventListener;
@@ -65,6 +66,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -86,6 +88,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.provider.Settings;
 import android.text.Html;
@@ -98,17 +101,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import android.view.Gravity;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import com.google.android.material.navigation.NavigationView;
+import androidx.core.view.GravityCompat;
+import android.view.MenuItem;
 
 import io.sentry.android.core.SentryAndroid;
 
 public class MainActivity extends BaseActivity implements OnKeyboardEventListener, OnKeyboardDownloadEventListener,
     ActivityCompat.OnRequestPermissionsResultCallback {
   public static Context context;
+
+  private DrawerLayout drawerLayout;
+  private ActionBarDrawerToggle drawerToggle;
 
   // Fields used for installing kmp packages
   public static final int PERMISSION_REQUEST_STORAGE = 0;
@@ -176,11 +191,45 @@ public class MainActivity extends BaseActivity implements OnKeyboardEventListene
     toolbar = (Toolbar) findViewById(R.id.titlebar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setTitle(null);
-    getSupportActionBar().setDisplayUseLogoEnabled(true);
-    getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+    getSupportActionBar().setDisplayUseLogoEnabled(false);
+    getSupportActionBar().setDisplayShowHomeEnabled(false);
     getSupportActionBar().setDisplayShowTitleEnabled(false);
+    ImageView logo = new ImageView(this);
+    logo.setImageResource(R.drawable.keyman_logo);
+    Toolbar.LayoutParams params = new Toolbar.LayoutParams(
+      Toolbar.LayoutParams.WRAP_CONTENT,
+      Toolbar.LayoutParams.WRAP_CONTENT,
+      Gravity.CENTER
+    );
+    toolbar.addView(logo, params);
+//    getSupportActionBar().setLogo(R.drawable.keyman_logo);
     getSupportActionBar().setBackgroundDrawable(getActionBarDrawable(this));
+
+    drawerLayout = findViewById(R.id.drawer_layout);
+    drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open , R.string.drawer_close);
+    drawerLayout.addDrawerListener(drawerToggle);
+    drawerToggle.syncState();
+    drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+
+      @Override
+      public void onDrawerSlide(View drawerView, float slideOffset) {
+        KMManager.hideSystemKeyboard();
+        textView.dismissKeyboard();
+      }
+      @Override
+      public void onDrawerOpened(View drawerView) {
+
+      }
+
+      @Override
+      public void onDrawerClosed(View drawerView) {
+            textView.callOnClick();
+      }
+    });
+
+    drawerToggle.getDrawerArrowDrawable().setColor(Color.BLACK);
+    drawerToggle.getDrawerArrowDrawable().setBarThickness(10f);
+    drawerToggle.getDrawerArrowDrawable().setGapSize(10f);
 
     textView = (KMTextView) findViewById(R.id.kmTextView);
     textView.setText(prefs.getString(userTextKey, ""));

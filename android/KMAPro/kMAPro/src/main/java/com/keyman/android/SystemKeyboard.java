@@ -93,6 +93,7 @@ public class SystemKeyboard extends InputMethodService implements OnKeyboardEven
     }
   }
 
+
   @Override
   public void onDestroy() {
     inputView = null;

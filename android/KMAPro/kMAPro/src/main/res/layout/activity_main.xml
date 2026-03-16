@@ -11,7 +11,7 @@
     android:background="@android:color/white"
     tools:context=".MainActivity">
 
-    <include layout="@layout/titlebar"
+    <include layout="@layout/custom_toolbar"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

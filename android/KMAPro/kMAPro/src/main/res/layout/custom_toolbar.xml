@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.appcompat.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/titlebar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/yellow_background"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/menu_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="8dp"
+            android:background="@null"
+            android:scaleType="centerInside"
+            android:src="@drawable/hamburger"
+            android:contentDescription="@string/more_info"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/right_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageButton
+                android:id="@+id/translate_button"
+                android:padding="10dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@string/translate_action"
+                android:src="@drawable/ic_translate"/>
+
+            <ImageButton
+                android:id="@+id/delete_button"
+                android:padding="10dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@string/action_clear_text"
+                android:src="@drawable/ic_light_action_trash"/>
+
+            <ImageButton
+                android:id="@+id/share_button"
+                android:padding="10dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@string/action_share"
+                android:src="@drawable/ic_light_action_share"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/toolbar_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/keyman_logo"
+            android:contentDescription="@string/keyman_logo"
+            app:layout_constraintStart_toEndOf="@id/menu_button"
+            app:layout_constraintEnd_toStartOf="@id/right_menu"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.appcompat.widget.Toolbar>

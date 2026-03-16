@@ -278,4 +278,8 @@
 
   <!-- Context: anywhere -->
   <string name="unable_to_open_browser" comment="Notification when a browser activity cannot be launched">Unable to launch web browser</string>
+    <string name="three_dot_men">three_dot_men</string>
+    <string name="translate_action" comment="translate when keyboard has functionality not supported by current Keyman">
+    Keyboard requires a newer version of Keyman</string>
+    <string name="keyman_logo" />
 </resources>

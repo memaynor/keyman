@@ -99,7 +99,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -169,17 +171,98 @@ public class MainActivity extends BaseActivity implements OnKeyboardEventListene
 
     setContentView(R.layout.activity_main);
 
+    if(getSupportActionBar() !=null ){
+        getSupportActionBar().hide();
+
+    }
+
     constraintLayout = (ConstraintLayout)findViewById(R.id.constraintLayout);
     setupEdgeToEdge(R.id.constraintLayout);
     setupStatusBarColors(android.R.color.white, R.color.neutral_2);
 
+    //test with new mock UI
     toolbar = (Toolbar) findViewById(R.id.titlebar);
     setSupportActionBar(toolbar);
-    getSupportActionBar().setTitle(null);
-    getSupportActionBar().setDisplayUseLogoEnabled(true);
-    getSupportActionBar().setDisplayShowHomeEnabled(true);
-    getSupportActionBar().setLogo(R.drawable.keyman_logo);
-    getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
+    if(getSupportActionBar() !=null){
+      getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+
+    // Hook up custom toolbar buttons
+    ImageButton menuButton = findViewById(R.id.menu_button);
+    ImageButton translateButton = findViewById(R.id.translate_button);
+    ImageButton deleteButton = findViewById(R.id.delete_button);
+    ImageButton shareButton = findViewById(R.id.share_button);
+
+    if (menuButton != null) {
+      menuButton.setOnClickListener(new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          PopupMenu popup = new PopupMenu(MainActivity.this, v);
+          popup.getMenuInflater().inflate(R.menu.main, popup.getMenu());
+          // Force icons to be shown in the PopupMenu
+          try {
+            java.lang.reflect.Field[] fields = popup.getClass().getDeclaredFields();
+            for (java.lang.reflect.Field field : fields) {
+              if ("mPopup".equals(field.getName())) {
+                field.setAccessible(true);
+                Object menuPopupHelper = field.get(popup);
+                Class<?> classPopupHelper = Class.forName(menuPopupHelper.getClass().getName());
+                java.lang.reflect.Method setForceIcons =
+                  classPopupHelper.getMethod("setForceShowIcon", boolean.class);
+                setForceIcons.invoke(menuPopupHelper, true);
+                break;
+              }
+            }
+          } catch (Exception e) {
+            KMLog.LogException(TAG, "Unable to force menu icons visible", e);
+          }
+          popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+              return onOptionsItemSelected(item);
+            }
+          });
+          popup.show();
+        }
+      });
+    }
+
+    if (translateButton != null) {
+      translateButton.setOnClickListener(new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          // TODO: Implement translate behavior
+          Toast.makeText(MainActivity.this, getString(R.string.translate_action), Toast.LENGTH_SHORT).show();
+        }
+      });
+    }
+
+    if (deleteButton != null) {
+      deleteButton.setOnClickListener(new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          showClearTextDialog();
+        }
+      });
+    }
+
+    if (shareButton != null) {
+      shareButton.setOnClickListener(new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          showShareDialog();
+        }
+      });
+    }
+
+//    getSupportActionBar().setTitle(null);
+//    getSupportActionBar().setDisplayUseLogoEnabled(true);
+//    getSupportActionBar().setDisplayShowHomeEnabled(true);
+//    getSupportActionBar().setDisplayShowTitleEnabled(false);
+//    getSupportActionBar().setLogo(R.drawable.keyman_logo);
+
     getSupportActionBar().setBackgroundDrawable(getActionBarDrawable(this));
 
     textView = (KMTextView) findViewById(R.id.kmTextView);
@@ -420,24 +503,46 @@ public class MainActivity extends BaseActivity implements OnKeyboardEventListene
     _t.setText(String.valueOf(anUpdateCount));
   }
 
+//  @Override
+//  public boolean onCreateOptionsMenu(Menu menu) {
+//    // Inflate the menu; this adds items to the action bar if it is present.
+//    getMenuInflater().inflate(R.menu.main, menu);
+//    this.menu = menu;
+//
+//    KMManager.getUpdateTool().addPropertyChangeListener(new PropertyChangeListener()
+//      {
+//        @Override
+//        public void propertyChange(PropertyChangeEvent evt) {
+//          if(!evt.getPropertyName().equals("updateCount"))
+//            return;
+//          updateUpdateCountIndicator(
+//            evt.getNewValue()==null?0:(Integer) evt.getNewValue());
+//        }
+//      }
+//    );
+//    updateUpdateCountIndicator(KMManager.getUpdateTool().getOpenUpdateCount());
+//    return true;
+//  }
+
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
-    getMenuInflater().inflate(R.menu.main, menu);
+
+    // keep reference but DO NOT inflate into ActionBar
     this.menu = menu;
 
-    KMManager.getUpdateTool().addPropertyChangeListener(new PropertyChangeListener()
-      {
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-          if(!evt.getPropertyName().equals("updateCount"))
-            return;
-          updateUpdateCountIndicator(
-            evt.getNewValue()==null?0:(Integer) evt.getNewValue());
-        }
+    KMManager.getUpdateTool().addPropertyChangeListener(new PropertyChangeListener() {
+      @Override
+      public void propertyChange(PropertyChangeEvent evt) {
+        if(!evt.getPropertyName().equals("updateCount"))
+          return;
+
+        updateUpdateCountIndicator(
+          evt.getNewValue()==null?0:(Integer) evt.getNewValue());
       }
-    );
+    });
+
     updateUpdateCountIndicator(KMManager.getUpdateTool().getOpenUpdateCount());
+
     return true;
   }
 

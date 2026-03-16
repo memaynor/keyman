@@ -234,7 +234,9 @@ public class MainActivity extends BaseActivity implements OnKeyboardEventListene
         @Override
         public void onClick(View v) {
           // TODO: Implement translate behavior
-          Toast.makeText(MainActivity.this, getString(R.string.translate_action), Toast.LENGTH_SHORT).show();
+          Intent intent = new Intent(MainActivity.this, KeymanSettingsLocalizeActivity.class);
+          startActivity(intent);
+//          Toast.makeText(MainActivity.this, getString(R.string.translate_action), Toast.LENGTH_SHORT).show();
         }
       });
     }

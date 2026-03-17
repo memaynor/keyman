@@ -7,6 +7,10 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:background="@color/yellow_background"
+    app:contentInsetStart="0dp"
+    app:contentInsetEnd="0dp"
+    app:contentInsetLeft="0dp"
+    app:contentInsetRight="0dp"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +41,7 @@
 
             <ImageButton
                 android:id="@+id/translate_button"
-                android:padding="10dp"
+                android:padding="8dp"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@null"
@@ -47,7 +51,7 @@
 
             <ImageButton
                 android:id="@+id/delete_button"
-                android:padding="10dp"
+                android:padding="8dp"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@null"
@@ -57,7 +61,7 @@
 
             <ImageButton
                 android:id="@+id/share_button"
-                android:padding="10dp"
+                android:padding="8dp"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:background="@null"
@@ -70,7 +74,7 @@
         <ImageView
             android:id="@+id/toolbar_logo"
             android:layout_width="wrap_content"
-            android:layout_height="26dp"
+            android:layout_height="18dp"
             android:adjustViewBounds="true"
             android:src="@drawable/keyman_logo"
             android:contentDescription="@string/keyman_logo"

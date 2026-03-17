@@ -29,16 +29,7 @@
         android:title="@string/action_settings"
         android:icon="@drawable/ic_settings" />
 
-    <item
-        android:id="@+id/action_update_keyboards"
-        android:title="@string/action_install_updates"
-        android:icon="@drawable/ic_cloud_download"
-        app:actionLayout="@layout/update_count_view"/>
 
-    <item
-        android:id="@+id/action_share"
-        android:title="@string/action_share"
-        android:icon="@drawable/ic_light_action_share" />
 
     <!-- Placeholder item to satisfy existing MainActivity references.
          Kept invisible so it does not show in the popup menu. -->

@@ -190,43 +190,48 @@ public class MainActivity extends BaseActivity implements OnKeyboardEventListene
     }
 
     // Hook up custom toolbar buttons
-    ImageButton menuButton = findViewById(R.id.menu_button);
+    ImageButton threeDotMenuButton = findViewById(R.id.menu_button);
     ImageButton translateButton = findViewById(R.id.translate_button);
     ImageButton deleteButton = findViewById(R.id.delete_button);
     ImageButton shareButton = findViewById(R.id.share_button);
 
-    if (menuButton != null) {
-      menuButton.setOnClickListener(new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          PopupMenu popup = new PopupMenu(MainActivity.this, v);
-          popup.getMenuInflater().inflate(R.menu.main, popup.getMenu());
-          // Force icons to be shown in the PopupMenu
-          try {
-            java.lang.reflect.Field[] fields = popup.getClass().getDeclaredFields();
-            for (java.lang.reflect.Field field : fields) {
-              if ("mPopup".equals(field.getName())) {
-                field.setAccessible(true);
-                Object menuPopupHelper = field.get(popup);
-                Class<?> classPopupHelper = Class.forName(menuPopupHelper.getClass().getName());
-                java.lang.reflect.Method setForceIcons =
-                  classPopupHelper.getMethod("setForceShowIcon", boolean.class);
-                setForceIcons.invoke(menuPopupHelper, true);
-                break;
-              }
-            }
-          } catch (Exception e) {
-            KMLog.LogException(TAG, "Unable to force menu icons visible", e);
-          }
-          popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-              return onOptionsItemSelected(item);
-            }
-          });
-          popup.show();
-        }
-      });
+//    if (menuButton != null) {
+//      menuButton.setOnClickListener(new OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//          PopupMenu popup = new PopupMenu(MainActivity.this, v);
+//          popup.getMenuInflater().inflate(R.menu.main, popup.getMenu());
+//          // Force icons to be shown in the PopupMenu
+//          try {
+//            java.lang.reflect.Field[] fields = popup.getClass().getDeclaredFields();
+//            for (java.lang.reflect.Field field : fields) {
+//              if ("mPopup".equals(field.getName())) {
+//                field.setAccessible(true);
+//                Object menuPopupHelper = field.get(popup);
+//                Class<?> classPopupHelper = Class.forName(menuPopupHelper.getClass().getName());
+//                java.lang.reflect.Method setForceIcons =
+//                  classPopupHelper.getMethod("setForceShowIcon", boolean.class);
+//                setForceIcons.invoke(menuPopupHelper, true);
+//                break;
+//              }
+//            }
+//          } catch (Exception e) {
+//            KMLog.LogException(TAG, "Unable to force menu icons visible", e);
+//          }
+//          popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//              return onOptionsItemSelected(item);
+//            }
+//          });
+//          popup.show();
+//        }
+//      });
+//    }
+
+    if (threeDotMenuButton != null){
+
+      threeDotMenuButton.setOnClickListener(v -> showThreeDotSubMenu(v));
     }
 
     if (translateButton != null) {
@@ -236,7 +241,6 @@ public class MainActivity extends BaseActivity implements OnKeyboardEventListene
           // TODO: Implement translate behavior
           Intent intent = new Intent(MainActivity.this, KeymanSettingsLocalizeActivity.class);
           startActivity(intent);
-//          Toast.makeText(MainActivity.this, getString(R.string.translate_action), Toast.LENGTH_SHORT).show();
         }
       });
     }
@@ -280,6 +284,34 @@ public class MainActivity extends BaseActivity implements OnKeyboardEventListene
 
     CheckInstallReferrer.checkGooglePlayInstallReferrer(this, context);
     checkGetStarted();
+  }
+
+  private void showThreeDotSubMenu(View anchor){
+
+    PopupMenu popupMenu = new PopupMenu(MainActivity.this,anchor);
+    popupMenu.getMenuInflater().inflate(R.menu.main,popupMenu.getMenu());
+    
+    // Force icons to be shown in the PopupMenu
+    try {
+      java.lang.reflect.Field[] fields = popupMenu.getClass().getDeclaredFields();
+      for (java.lang.reflect.Field field : fields) {
+        if ("mPopup".equals(field.getName())) {
+          field.setAccessible(true);
+          Object menuPopupHelper = field.get(popupMenu);
+          Class<?> classPopupHelper = Class.forName(menuPopupHelper.getClass().getName());
+          java.lang.reflect.Method setForceIcons =
+            classPopupHelper.getMethod("setForceShowIcon", boolean.class);
+          setForceIcons.invoke(menuPopupHelper, true);
+          break;
+        }
+      }
+    } catch (Exception e) {
+      KMLog.LogException(TAG, "Unable to force menu icons visible", e);
+    }
+    
+    popupMenu.setOnMenuItemClickListener(this::onOptionsItemSelected);
+    popupMenu.show();
+
   }
 
   @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
